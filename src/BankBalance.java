@@ -6,12 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class BankBalance extends JFrame implements ActionListener {
-    private JButton calcButton; //Triggers balance calculation
+public class BankBalance extends JFrame {
+    private JButton withdrawalButton; //Triggers balance calculation
+    private JButton depositButton;
+    private JButton balanceButton;
     private JLabel balanceLabel; //Label for balance entered
     private JLabel withdrawalLabel; //FIX
     private JLabel depositLabel;
-    private JTextField accountBalance; //Displays account balance
+    private JPanel accountBalance; //Displays account balance
     private JTextField withdrawalField;
     private JTextField depositField;
     private double currentBalance = 0;
@@ -33,14 +35,34 @@ public class BankBalance extends JFrame implements ActionListener {
         depositLabel = new JLabel("Deposit amount");
 
         // Create button and add action listener
-        calcButton = new JButton("Calculate");
-        calcButton.addActionListener(this);
+        withdrawalButton = new JButton("Withdraw");
+        withdrawalButton.addActionListener(new ActionListener() {
+                                               public void actionPerformed(ActionEvent e) {
+                                                   balance = balance - Double.parseDouble(withdrawalField.getText());
+                                               }
+                                           });
+        depositButton = new JButton("Deposit");
+        depositButton.addActionListener(new ActionListener(){
+            // Override the actionPerformed() method
+            public void actionPerformed(ActionEvent e){
+                balance = balance + Double.parseDouble(depositField.getText());
+            }
+        });
+        balanceButton = new JButton("Show balance");
+        balanceButton.addActionListener(new ActionListener() {
+            // Override the actionPerformed() method
+            public void actionPerformed(ActionEvent e){
+                balanceLabel.setText("Balance: " + balance);
+            }
+        });
 
         // Create JTextFields
-        accountBalance = new JTextField(10);
-        accountBalance.setEditable(false);
+        JPanel accountBalance = new JPanel();
+        balanceLabel = new JLabel("Balance: " + balance);
         withdrawalField = new JTextField(10);
         depositField = new JTextField(10);
+
+
 
         // Grid layout
         layoutConst.gridx = 0;
@@ -70,30 +92,14 @@ public class BankBalance extends JFrame implements ActionListener {
 
         layoutConst.gridx = 3;
         layoutConst.gridy = 2;
-        add(calcButton, layoutConst);
-    }
+        add(withdrawalButton, layoutConst);
 
-    private void updateBalanceDisplay(double depositAmount, double withdrawalAmount) {
-        if (depositAmount >= 0) {
-            currentBalance = currentBalance + depositAmount;
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid");
-        }
+        layoutConst.gridx = 3;
+        layoutConst.gridy = 1;
+        add(depositButton, layoutConst);
 
-        if (withdrawalAmount >= 0) {
-            currentBalance -= withdrawalAmount;
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid");
-        }
-
-        accountBalance.setText(String.format("%.2f", currentBalance));
-    }
-
-
-    @Override
-    public void actionPerformed(ActionEvent event) {
-        double depositAmount = Double.parseDouble(depositField.getText());
-        double withdrawalAmount = Double.parseDouble(withdrawalField.getText());
-        updateBalanceDisplay(depositAmount, withdrawalAmount);
+        layoutConst.gridx = 1;
+        layoutConst.gridy = 3;
+        add(balanceButton, layoutConst);
     }
 }
