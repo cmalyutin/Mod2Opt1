@@ -1,76 +1,94 @@
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class BankBalance extends JFrame implements ActionListener {
-    private JButton enterBalance; //Triggers balance calculation
+    private JButton calcButton; //Triggers balance calculation
     private JLabel balanceLabel; //Label for balance entered
+    private JLabel withdrawalLabel; //FIX
+    private JLabel depositLabel;
     private JTextField accountBalance; //Displays account balance
-    private JTextField balanceField; // Holds balance input
+    private JTextField withdrawalField;
+    private JTextField depositField;
 
-    // Constructor creates GUI components and adds GUI components using a GridBagLayout.
+    private double balance = 0.0;
+
+
+    // Constructor
     BankBalance() {
-        // Used to specify GUI component layout
-        GridBagConstraints layoutConst = null;
 
-        // Set frame's title
+        // Set frames title
         setTitle("Bank Balance Program");
+        setLayout(new GridBagLayout());
+        GridBagConstraints layoutConst = new GridBagConstraints();
 
-        // Create label
-        balanceLabel = new JLabel("Distance (miles):");
+        // Create labels
+        balanceLabel = new JLabel("Enter your current balance):");
+        withdrawalLabel = new JLabel("Withdrawal amount");
+        depositLabel = new JLabel("Deposit amount");
 
         // Create button and add action listener
-        enterBalance = new JButton("Calculate");
-        enterBalance.addActionListener(this);
+        calcButton = new JButton("Calculate");
+        calcButton.addActionListener(this);
 
-        // Create account balance
-        accountBalance = new JTextField(5);
+        // Create JTextFields
+        accountBalance = new JTextField(10);
         accountBalance.setEditable(false);
+        withdrawalField = new JTextField(10);
+        depositField = new JTextField(10);
 
-        // Use a GridBagLayout
-        setLayout(new GridBagLayout());
+        // Grid layout
+        layoutConst.gridx = 0;
+        layoutConst.gridy = 0;
+        layoutConst.insets = new Insets(10, 10, 10, 10);
+        add(balanceLabel, layoutConst);
 
-        // Specify component's grid location
-        layoutConst = new GridBagConstraints();
         layoutConst.insets = new Insets(10, 10, 10, 1);
         layoutConst.gridx = 0;
         layoutConst.gridy = 0;
         add(balanceLabel, layoutConst);
 
-        layoutConst = new GridBagConstraints();
-        layoutConst.insets = new Insets(10, 1, 10, 10);
         layoutConst.gridx = 1;
         layoutConst.gridy = 0;
         add(accountBalance, layoutConst);
 
-        layoutConst = new GridBagConstraints();
-        layoutConst.insets = new Insets(10, 5, 10, 10);
-        layoutConst.gridx = 2;
-        layoutConst.gridy = 0;
-        add(enterBalance, layoutConst);
+        layoutConst.gridx = 0;
+        layoutConst.gridy = 1;
+        add(depositLabel, layoutConst);
+
+        layoutConst.gridx = 1;
+        layoutConst.gridy = 1;
+        add(depositField, layoutConst);
+
+        layoutConst.gridx = 1;
+        layoutConst.gridy = 2;
+        add(calcButton, layoutConst);
+
+
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
+        double depositAmount = Double.parseDouble(depositField.getText());
+        double withdrawalAmount = Double.parseDouble(withdrawalField.getText());
+
+        accountBalance += depositAmount;
+        accountBalance -= withdrawalAmount;
+
+        depositField.setText("");
+        withdrawalField.setText("");
+
+        //FIX ME
         String userInput;
         double currentBalance;
 
         // Get value from accountBalance
-        userInput = balanceField.getText();
+        userInput = depositField.getText();
 
-        currentBalance = Integer.parseInt(userInput);
+        currentBalance = Double.parseDouble(userInput);
 
-
-
-        // Check if miles input is positive
+        // Check if input is positive
         if (currentBalance >= 0.0) {
 
             System.out.println(currentBalance);
