@@ -14,6 +14,7 @@ public class BankBalance extends JFrame implements ActionListener {
     private JTextField accountBalance; //Displays account balance
     private JTextField withdrawalField;
     private JTextField depositField;
+    private double currentBalance = 0;
 
     private double balance = 0.0;
 
@@ -72,12 +73,7 @@ public class BankBalance extends JFrame implements ActionListener {
         add(calcButton, layoutConst);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent event) {
-        double depositAmount = Double.parseDouble(depositField.getText());
-        double withdrawalAmount = Double.parseDouble(withdrawalField.getText());
-        double currentBalance = 0;
-
+    private void updateBalanceDisplay(double depositAmount, double withdrawalAmount) {
         if (depositAmount >= 0) {
             currentBalance = currentBalance + depositAmount;
         } else {
@@ -90,6 +86,14 @@ public class BankBalance extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Invalid");
         }
 
+        accountBalance.setText(String.format("%.2f", currentBalance));
     }
 
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        double depositAmount = Double.parseDouble(depositField.getText());
+        double withdrawalAmount = Double.parseDouble(withdrawalField.getText());
+        updateBalanceDisplay(depositAmount, withdrawalAmount);
+    }
 }
