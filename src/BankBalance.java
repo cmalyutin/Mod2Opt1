@@ -1,4 +1,7 @@
-import java.awt.*;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -44,11 +47,6 @@ public class BankBalance extends JFrame implements ActionListener {
         layoutConst.insets = new Insets(10, 10, 10, 10);
         add(balanceLabel, layoutConst);
 
-        layoutConst.insets = new Insets(10, 10, 10, 1);
-        layoutConst.gridx = 0;
-        layoutConst.gridy = 0;
-        add(balanceLabel, layoutConst);
-
         layoutConst.gridx = 1;
         layoutConst.gridy = 0;
         add(accountBalance, layoutConst);
@@ -61,45 +59,37 @@ public class BankBalance extends JFrame implements ActionListener {
         layoutConst.gridy = 1;
         add(depositField, layoutConst);
 
-        layoutConst.gridx = 1;
+        layoutConst.gridx = 2;
+        layoutConst.gridy = 2;
+        add(withdrawalField, layoutConst);
+
+        layoutConst.gridx = 0;
+        layoutConst.gridy = 2;
+        add(withdrawalLabel, layoutConst);
+
+        layoutConst.gridx = 3;
         layoutConst.gridy = 2;
         add(calcButton, layoutConst);
-
-
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         double depositAmount = Double.parseDouble(depositField.getText());
         double withdrawalAmount = Double.parseDouble(withdrawalField.getText());
+        double currentBalance = 0;
 
-        accountBalance += depositAmount;
-        accountBalance -= withdrawalAmount;
-
-        depositField.setText("");
-        withdrawalField.setText("");
-
-        //FIX ME
-        String userInput;
-        double currentBalance;
-
-        // Get value from accountBalance
-        userInput = depositField.getText();
-
-        currentBalance = Double.parseDouble(userInput);
-
-        // Check if input is positive
-        if (currentBalance >= 0.0) {
-
-            System.out.println(currentBalance);
+        if (depositAmount >= 0) {
+            currentBalance = currentBalance + depositAmount;
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid");
         }
-        else {
-            // Show failure dialog
-            JOptionPane.showMessageDialog(this, "Enter a positive distance value!");
+
+        if (withdrawalAmount >= 0) {
+            currentBalance -= withdrawalAmount;
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid");
         }
 
     }
-
-
 
 }
