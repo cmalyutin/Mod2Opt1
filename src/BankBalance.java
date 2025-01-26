@@ -59,7 +59,7 @@ public class BankBalance extends JFrame implements ActionListener {
         layoutConst.gridy = 1;
         add(depositField, layoutConst);
 
-        layoutConst.gridx = 2;
+        layoutConst.gridx = 1;
         layoutConst.gridy = 2;
         add(withdrawalField, layoutConst);
 
